@@ -4,8 +4,11 @@ import android.renderscript.Script;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidproject.model.IProblem;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -37,7 +40,8 @@ public class Problem {
 					"	return Math.floor(Math.random() *  (max - min) + min);" +
 					"}";
 
-			String operator = "let x = ['/','*','-','+'];";
+//			String operator = "let x = ['/','*','-','+'];";
+			String operator = "let x = ['*','-','+'];";
 
 			String buildTree = "function buildTree(numNodes) {\n" +
 					"    if (numNodes === 1)\n" +
@@ -63,14 +67,23 @@ public class Problem {
 		}
 	}
 
-	public void generate() {
+	public IProblem generate() {
+		IProblem problem = new IProblem();
 		try {
-			Object question = engine.eval("buildTree(3).toString()");
-			Object answer = engine.eval(question.toString());
-			System.out.println(question.toString());
-			System.out.println(answer.toString());
+			String question = engine.eval("buildTree(3).toString()").toString();
+			String answer = engine.eval(question).toString();
+			answer = String.valueOf(new Double(answer).intValue());
+			problem =  new IProblem(question, answer);
+//			System.out.println(question.toString());
+//			System.out.println(answer.toString());
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+		return problem;
+	}
+
+	public String randomAnswer(String answer) {
+		int ans = new Double(answer).intValue();
+		return String.valueOf(ans + this.randomNumberRange(-100, 100));
 	}
 }
