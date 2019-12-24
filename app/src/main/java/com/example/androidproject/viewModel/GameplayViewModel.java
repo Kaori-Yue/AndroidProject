@@ -113,7 +113,7 @@ public class GameplayViewModel extends ViewModel {
 
 
 	private void createTimer() {
-		new CountDownTimer(5000, 100) {
+		new CountDownTimer(30000, 100) {
 			@Override
 			public void onTick(long l) {
 				String t = String.format("%.1f", (double)l / 1000);
